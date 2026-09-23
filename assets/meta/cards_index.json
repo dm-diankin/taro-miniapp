@@ -1,0 +1,782 @@
+[
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 1,
+    "kind": "number",
+    "original_file": "Cups01.jpg",
+    "new_file": "minor_cups_01.jpg",
+    "source_path": "assets/cards/minor_cups_01.jpg",
+    "target_path": "assets/cards/minor_cups_01.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 2,
+    "kind": "number",
+    "original_file": "Cups02.jpg",
+    "new_file": "minor_cups_02.jpg",
+    "source_path": "assets/cards/minor_cups_02.jpg",
+    "target_path": "assets/cards/minor_cups_02.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 3,
+    "kind": "number",
+    "original_file": "Cups03.jpg",
+    "new_file": "minor_cups_03.jpg",
+    "source_path": "assets/cards/minor_cups_03.jpg",
+    "target_path": "assets/cards/minor_cups_03.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 4,
+    "kind": "number",
+    "original_file": "Cups04.jpg",
+    "new_file": "minor_cups_04.jpg",
+    "source_path": "assets/cards/minor_cups_04.jpg",
+    "target_path": "assets/cards/minor_cups_04.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 5,
+    "kind": "number",
+    "original_file": "Cups05.jpg",
+    "new_file": "minor_cups_05.jpg",
+    "source_path": "assets/cards/minor_cups_05.jpg",
+    "target_path": "assets/cards/minor_cups_05.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 6,
+    "kind": "number",
+    "original_file": "Cups06.jpg",
+    "new_file": "minor_cups_06.jpg",
+    "source_path": "assets/cards/minor_cups_06.jpg",
+    "target_path": "assets/cards/minor_cups_06.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 7,
+    "kind": "number",
+    "original_file": "Cups07.jpg",
+    "new_file": "minor_cups_07.jpg",
+    "source_path": "assets/cards/minor_cups_07.jpg",
+    "target_path": "assets/cards/minor_cups_07.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 8,
+    "kind": "number",
+    "original_file": "Cups08.jpg",
+    "new_file": "minor_cups_08.jpg",
+    "source_path": "assets/cards/minor_cups_08.jpg",
+    "target_path": "assets/cards/minor_cups_08.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 9,
+    "kind": "number",
+    "original_file": "Cups09.jpg",
+    "new_file": "minor_cups_09.jpg",
+    "source_path": "assets/cards/minor_cups_09.jpg",
+    "target_path": "assets/cards/minor_cups_09.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 10,
+    "kind": "number",
+    "original_file": "Cups10.jpg",
+    "new_file": "minor_cups_10.jpg",
+    "source_path": "assets/cards/minor_cups_10.jpg",
+    "target_path": "assets/cards/minor_cups_10.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 11,
+    "kind": "number",
+    "original_file": "Cups11.jpg",
+    "new_file": "minor_cups_11.jpg",
+    "source_path": "assets/cards/minor_cups_11.jpg",
+    "target_path": "assets/cards/minor_cups_11.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 12,
+    "kind": "number",
+    "original_file": "Cups12.jpg",
+    "new_file": "minor_cups_12.jpg",
+    "source_path": "assets/cards/minor_cups_12.jpg",
+    "target_path": "assets/cards/minor_cups_12.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 13,
+    "kind": "number",
+    "original_file": "Cups13.jpg",
+    "new_file": "minor_cups_13.jpg",
+    "source_path": "assets/cards/minor_cups_13.jpg",
+    "target_path": "assets/cards/minor_cups_13.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "cups",
+    "rank": 14,
+    "kind": "number",
+    "original_file": "Cups14.jpg",
+    "new_file": "minor_cups_14.jpg",
+    "source_path": "assets/cards/minor_cups_14.jpg",
+    "target_path": "assets/cards/minor_cups_14.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 1,
+    "kind": "number",
+    "original_file": "Pents01.jpg",
+    "new_file": "minor_pentacles_01.jpg",
+    "source_path": "assets/cards/minor_pentacles_01.jpg",
+    "target_path": "assets/cards/minor_pentacles_01.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 2,
+    "kind": "number",
+    "original_file": "Pents02.jpg",
+    "new_file": "minor_pentacles_02.jpg",
+    "source_path": "assets/cards/minor_pentacles_02.jpg",
+    "target_path": "assets/cards/minor_pentacles_02.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 3,
+    "kind": "number",
+    "original_file": "Pents03.jpg",
+    "new_file": "minor_pentacles_03.jpg",
+    "source_path": "assets/cards/minor_pentacles_03.jpg",
+    "target_path": "assets/cards/minor_pentacles_03.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 4,
+    "kind": "number",
+    "original_file": "Pents04.jpg",
+    "new_file": "minor_pentacles_04.jpg",
+    "source_path": "assets/cards/minor_pentacles_04.jpg",
+    "target_path": "assets/cards/minor_pentacles_04.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 5,
+    "kind": "number",
+    "original_file": "Pents05.jpg",
+    "new_file": "minor_pentacles_05.jpg",
+    "source_path": "assets/cards/minor_pentacles_05.jpg",
+    "target_path": "assets/cards/minor_pentacles_05.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 6,
+    "kind": "number",
+    "original_file": "Pents06.jpg",
+    "new_file": "minor_pentacles_06.jpg",
+    "source_path": "assets/cards/minor_pentacles_06.jpg",
+    "target_path": "assets/cards/minor_pentacles_06.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 7,
+    "kind": "number",
+    "original_file": "Pents07.jpg",
+    "new_file": "minor_pentacles_07.jpg",
+    "source_path": "assets/cards/minor_pentacles_07.jpg",
+    "target_path": "assets/cards/minor_pentacles_07.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 8,
+    "kind": "number",
+    "original_file": "Pents08.jpg",
+    "new_file": "minor_pentacles_08.jpg",
+    "source_path": "assets/cards/minor_pentacles_08.jpg",
+    "target_path": "assets/cards/minor_pentacles_08.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 9,
+    "kind": "number",
+    "original_file": "Pents09.jpg",
+    "new_file": "minor_pentacles_09.jpg",
+    "source_path": "assets/cards/minor_pentacles_09.jpg",
+    "target_path": "assets/cards/minor_pentacles_09.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 10,
+    "kind": "number",
+    "original_file": "Pents10.jpg",
+    "new_file": "minor_pentacles_10.jpg",
+    "source_path": "assets/cards/minor_pentacles_10.jpg",
+    "target_path": "assets/cards/minor_pentacles_10.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 11,
+    "kind": "number",
+    "original_file": "Pents11.jpg",
+    "new_file": "minor_pentacles_11.jpg",
+    "source_path": "assets/cards/minor_pentacles_11.jpg",
+    "target_path": "assets/cards/minor_pentacles_11.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 12,
+    "kind": "number",
+    "original_file": "Pents12.jpg",
+    "new_file": "minor_pentacles_12.jpg",
+    "source_path": "assets/cards/minor_pentacles_12.jpg",
+    "target_path": "assets/cards/minor_pentacles_12.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 13,
+    "kind": "number",
+    "original_file": "Pents13.jpg",
+    "new_file": "minor_pentacles_13.jpg",
+    "source_path": "assets/cards/minor_pentacles_13.jpg",
+    "target_path": "assets/cards/minor_pentacles_13.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "pentacles",
+    "rank": 14,
+    "kind": "number",
+    "original_file": "Pents14.jpg",
+    "new_file": "minor_pentacles_14.jpg",
+    "source_path": "assets/cards/minor_pentacles_14.jpg",
+    "target_path": "assets/cards/minor_pentacles_14.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 0,
+    "kind": "major",
+    "original_file": "RWS_Tarot_00_Fool.jpg",
+    "new_file": "major_00_fool.jpg",
+    "source_path": "assets/cards/major_00_fool.jpg",
+    "target_path": "assets/cards/major_00_fool.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 1,
+    "kind": "major",
+    "original_file": "RWS_Tarot_01_Magician.jpg",
+    "new_file": "major_01_magician.jpg",
+    "source_path": "assets/cards/major_01_magician.jpg",
+    "target_path": "assets/cards/major_01_magician.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 2,
+    "kind": "major",
+    "original_file": "RWS_Tarot_02_High_Priestess.jpg",
+    "new_file": "major_02_high_priestess.jpg",
+    "source_path": "assets/cards/major_02_high_priestess.jpg",
+    "target_path": "assets/cards/major_02_high_priestess.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 3,
+    "kind": "major",
+    "original_file": "RWS_Tarot_03_Empress.jpg",
+    "new_file": "major_03_empress.jpg",
+    "source_path": "assets/cards/major_03_empress.jpg",
+    "target_path": "assets/cards/major_03_empress.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 4,
+    "kind": "major",
+    "original_file": "RWS_Tarot_04_Emperor.jpg",
+    "new_file": "major_04_emperor.jpg",
+    "source_path": "assets/cards/major_04_emperor.jpg",
+    "target_path": "assets/cards/major_04_emperor.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 5,
+    "kind": "major",
+    "original_file": "RWS_Tarot_05_Hierophant.jpg",
+    "new_file": "major_05_hierophant.jpg",
+    "source_path": "assets/cards/major_05_hierophant.jpg",
+    "target_path": "assets/cards/major_05_hierophant.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 6,
+    "kind": "major",
+    "original_file": "RWS_Tarot_06_Lovers.jpg",
+    "new_file": "major_06_lovers.jpg",
+    "source_path": "assets/cards/major_06_lovers.jpg",
+    "target_path": "assets/cards/major_06_lovers.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 7,
+    "kind": "major",
+    "original_file": "RWS_Tarot_07_Chariot.jpg",
+    "new_file": "major_07_chariot.jpg",
+    "source_path": "assets/cards/major_07_chariot.jpg",
+    "target_path": "assets/cards/major_07_chariot.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 8,
+    "kind": "major",
+    "original_file": "RWS_Tarot_08_Strength.jpg",
+    "new_file": "major_08_strength.jpg",
+    "source_path": "assets/cards/major_08_strength.jpg",
+    "target_path": "assets/cards/major_08_strength.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 9,
+    "kind": "major",
+    "original_file": "RWS_Tarot_09_Hermit.jpg",
+    "new_file": "major_09_hermit.jpg",
+    "source_path": "assets/cards/major_09_hermit.jpg",
+    "target_path": "assets/cards/major_09_hermit.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 10,
+    "kind": "major",
+    "original_file": "RWS_Tarot_10_Wheel_of_Fortune.jpg",
+    "new_file": "major_10_wheel_of_fortune.jpg",
+    "source_path": "assets/cards/major_10_wheel_of_fortune.jpg",
+    "target_path": "assets/cards/major_10_wheel_of_fortune.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 11,
+    "kind": "major",
+    "original_file": "RWS_Tarot_11_Justice.jpg",
+    "new_file": "major_11_justice.jpg",
+    "source_path": "assets/cards/major_11_justice.jpg",
+    "target_path": "assets/cards/major_11_justice.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 12,
+    "kind": "major",
+    "original_file": "RWS_Tarot_12_Hanged_Man.jpg",
+    "new_file": "major_12_hanged_man.jpg",
+    "source_path": "assets/cards/major_12_hanged_man.jpg",
+    "target_path": "assets/cards/major_12_hanged_man.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 13,
+    "kind": "major",
+    "original_file": "RWS_Tarot_13_Death.jpg",
+    "new_file": "major_13_death.jpg",
+    "source_path": "assets/cards/major_13_death.jpg",
+    "target_path": "assets/cards/major_13_death.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 14,
+    "kind": "major",
+    "original_file": "RWS_Tarot_14_Temperance.jpg",
+    "new_file": "major_14_temperance.jpg",
+    "source_path": "assets/cards/major_14_temperance.jpg",
+    "target_path": "assets/cards/major_14_temperance.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 15,
+    "kind": "major",
+    "original_file": "RWS_Tarot_15_Devil.jpg",
+    "new_file": "major_15_devil.jpg",
+    "source_path": "assets/cards/major_15_devil.jpg",
+    "target_path": "assets/cards/major_15_devil.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 16,
+    "kind": "major",
+    "original_file": "RWS_Tarot_16_Tower.jpg",
+    "new_file": "major_16_tower.jpg",
+    "source_path": "assets/cards/major_16_tower.jpg",
+    "target_path": "assets/cards/major_16_tower.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 17,
+    "kind": "major",
+    "original_file": "RWS_Tarot_17_Star.jpg",
+    "new_file": "major_17_star.jpg",
+    "source_path": "assets/cards/major_17_star.jpg",
+    "target_path": "assets/cards/major_17_star.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 18,
+    "kind": "major",
+    "original_file": "RWS_Tarot_18_Moon.jpg",
+    "new_file": "major_18_moon.jpg",
+    "source_path": "assets/cards/major_18_moon.jpg",
+    "target_path": "assets/cards/major_18_moon.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 19,
+    "kind": "major",
+    "original_file": "RWS_Tarot_19_Sun.jpg",
+    "new_file": "major_19_sun.jpg",
+    "source_path": "assets/cards/major_19_sun.jpg",
+    "target_path": "assets/cards/major_19_sun.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 20,
+    "kind": "major",
+    "original_file": "RWS_Tarot_20_Judgement.jpg",
+    "new_file": "major_20_judgement.jpg",
+    "source_path": "assets/cards/major_20_judgement.jpg",
+    "target_path": "assets/cards/major_20_judgement.jpg"
+  },
+  {
+    "arcana": "major",
+    "suit": null,
+    "rank": 21,
+    "kind": "major",
+    "original_file": "RWS_Tarot_21_World.jpg",
+    "new_file": "major_21_world.jpg",
+    "source_path": "assets/cards/major_21_world.jpg",
+    "target_path": "assets/cards/major_21_world.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 1,
+    "kind": "number",
+    "original_file": "Swords01.jpg",
+    "new_file": "minor_swords_01.jpg",
+    "source_path": "assets/cards/minor_swords_01.jpg",
+    "target_path": "assets/cards/minor_swords_01.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 2,
+    "kind": "number",
+    "original_file": "Swords02.jpg",
+    "new_file": "minor_swords_02.jpg",
+    "source_path": "assets/cards/minor_swords_02.jpg",
+    "target_path": "assets/cards/minor_swords_02.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 3,
+    "kind": "number",
+    "original_file": "Swords03.jpg",
+    "new_file": "minor_swords_03.jpg",
+    "source_path": "assets/cards/minor_swords_03.jpg",
+    "target_path": "assets/cards/minor_swords_03.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 4,
+    "kind": "number",
+    "original_file": "Swords04.jpg",
+    "new_file": "minor_swords_04.jpg",
+    "source_path": "assets/cards/minor_swords_04.jpg",
+    "target_path": "assets/cards/minor_swords_04.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 5,
+    "kind": "number",
+    "original_file": "Swords05.jpg",
+    "new_file": "minor_swords_05.jpg",
+    "source_path": "assets/cards/minor_swords_05.jpg",
+    "target_path": "assets/cards/minor_swords_05.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 6,
+    "kind": "number",
+    "original_file": "Swords06.jpg",
+    "new_file": "minor_swords_06.jpg",
+    "source_path": "assets/cards/minor_swords_06.jpg",
+    "target_path": "assets/cards/minor_swords_06.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 7,
+    "kind": "number",
+    "original_file": "Swords07.jpg",
+    "new_file": "minor_swords_07.jpg",
+    "source_path": "assets/cards/minor_swords_07.jpg",
+    "target_path": "assets/cards/minor_swords_07.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 8,
+    "kind": "number",
+    "original_file": "Swords08.jpg",
+    "new_file": "minor_swords_08.jpg",
+    "source_path": "assets/cards/minor_swords_08.jpg",
+    "target_path": "assets/cards/minor_swords_08.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 9,
+    "kind": "number",
+    "original_file": "Swords09.jpg",
+    "new_file": "minor_swords_09.jpg",
+    "source_path": "assets/cards/minor_swords_09.jpg",
+    "target_path": "assets/cards/minor_swords_09.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 10,
+    "kind": "number",
+    "original_file": "Swords10.jpg",
+    "new_file": "minor_swords_10.jpg",
+    "source_path": "assets/cards/minor_swords_10.jpg",
+    "target_path": "assets/cards/minor_swords_10.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 11,
+    "kind": "number",
+    "original_file": "Swords11.jpg",
+    "new_file": "minor_swords_11.jpg",
+    "source_path": "assets/cards/minor_swords_11.jpg",
+    "target_path": "assets/cards/minor_swords_11.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 12,
+    "kind": "number",
+    "original_file": "Swords12.jpg",
+    "new_file": "minor_swords_12.jpg",
+    "source_path": "assets/cards/minor_swords_12.jpg",
+    "target_path": "assets/cards/minor_swords_12.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 13,
+    "kind": "number",
+    "original_file": "Swords13.jpg",
+    "new_file": "minor_swords_13.jpg",
+    "source_path": "assets/cards/minor_swords_13.jpg",
+    "target_path": "assets/cards/minor_swords_13.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "swords",
+    "rank": 14,
+    "kind": "number",
+    "original_file": "Swords14.jpg",
+    "new_file": "minor_swords_14.jpg",
+    "source_path": "assets/cards/minor_swords_14.jpg",
+    "target_path": "assets/cards/minor_swords_14.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 1,
+    "kind": "number",
+    "original_file": "Wands01.jpg",
+    "new_file": "minor_wands_01.jpg",
+    "source_path": "assets/cards/minor_wands_01.jpg",
+    "target_path": "assets/cards/minor_wands_01.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 2,
+    "kind": "number",
+    "original_file": "Wands02.jpg",
+    "new_file": "minor_wands_02.jpg",
+    "source_path": "assets/cards/minor_wands_02.jpg",
+    "target_path": "assets/cards/minor_wands_02.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 3,
+    "kind": "number",
+    "original_file": "Wands03.jpg",
+    "new_file": "minor_wands_03.jpg",
+    "source_path": "assets/cards/minor_wands_03.jpg",
+    "target_path": "assets/cards/minor_wands_03.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 4,
+    "kind": "number",
+    "original_file": "Wands04.jpg",
+    "new_file": "minor_wands_04.jpg",
+    "source_path": "assets/cards/minor_wands_04.jpg",
+    "target_path": "assets/cards/minor_wands_04.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 5,
+    "kind": "number",
+    "original_file": "Wands05.jpg",
+    "new_file": "minor_wands_05.jpg",
+    "source_path": "assets/cards/minor_wands_05.jpg",
+    "target_path": "assets/cards/minor_wands_05.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 6,
+    "kind": "number",
+    "original_file": "Wands06.jpg",
+    "new_file": "minor_wands_06.jpg",
+    "source_path": "assets/cards/minor_wands_06.jpg",
+    "target_path": "assets/cards/minor_wands_06.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 7,
+    "kind": "number",
+    "original_file": "Wands07.jpg",
+    "new_file": "minor_wands_07.jpg",
+    "source_path": "assets/cards/minor_wands_07.jpg",
+    "target_path": "assets/cards/minor_wands_07.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 8,
+    "kind": "number",
+    "original_file": "Wands08.jpg",
+    "new_file": "minor_wands_08.jpg",
+    "source_path": "assets/cards/minor_wands_08.jpg",
+    "target_path": "assets/cards/minor_wands_08.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 9,
+    "kind": "number",
+    "original_file": "Wands09.jpg",
+    "new_file": "minor_wands_09.jpg",
+    "source_path": "assets/cards/minor_wands_09.jpg",
+    "target_path": "assets/cards/minor_wands_09.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 10,
+    "kind": "number",
+    "original_file": "Wands10.jpg",
+    "new_file": "minor_wands_10.jpg",
+    "source_path": "assets/cards/minor_wands_10.jpg",
+    "target_path": "assets/cards/minor_wands_10.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 11,
+    "kind": "number",
+    "original_file": "Wands11.jpg",
+    "new_file": "minor_wands_11.jpg",
+    "source_path": "assets/cards/minor_wands_11.jpg",
+    "target_path": "assets/cards/minor_wands_11.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 12,
+    "kind": "number",
+    "original_file": "Wands12.jpg",
+    "new_file": "minor_wands_12.jpg",
+    "source_path": "assets/cards/minor_wands_12.jpg",
+    "target_path": "assets/cards/minor_wands_12.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 13,
+    "kind": "number",
+    "original_file": "Wands13.jpg",
+    "new_file": "minor_wands_13.jpg",
+    "source_path": "assets/cards/minor_wands_13.jpg",
+    "target_path": "assets/cards/minor_wands_13.jpg"
+  },
+  {
+    "arcana": "minor",
+    "suit": "wands",
+    "rank": 14,
+    "kind": "number",
+    "original_file": "Wands14.jpg",
+    "new_file": "minor_wands_14.jpg",
+    "source_path": "assets/cards/minor_wands_14.jpg",
+    "target_path": "assets/cards/minor_wands_14.jpg"
+  }
+]

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>TARO Card Picker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  </head>
+  <body>
+    <main class="surface">
+      <section class="topbar" aria-live="polite">
+        <div id="status">Загрузка колоды...</div>
+        <div id="hint">Проведите пальцем по картам. Потяните выбранную вниз.</div>
+        <div id="debug-position" class="debug-position" hidden></div>
+      </section>
+
+      <section class="table">
+        <div id="fan" class="fan" aria-label="Веер карт"></div>
+      </section>
+
+      <section class="controls">
+        <button id="shuffle-button" type="button" class="primary">Перемешать</button>
+      </section>
+
+      <section id="selected" class="selected" aria-label="Выбранные карты"></section>
+
+      <section id="direction-panel" class="panel" hidden>
+        <button type="button" class="primary" data-direction="top">Сверху</button>
+        <button type="button" class="primary secondary" data-direction="bottom">Снизу</button>
+      </section>
+
+      <section id="reveal-panel" class="reveal" hidden>
+        <div id="reveal-card" class="reveal-card" aria-live="polite"></div>
+        <div id="reveal-name" class="card-name"></div>
+        <button id="reveal-button" type="button" class="primary">Показать</button>
+        <button id="send-button" type="button" class="primary" hidden>Передать боту</button>
+      </section>
+
+      <section id="sequence-panel" class="sequence-panel" hidden>
+        <div id="sequence" class="sequence"></div>
+        <button id="send-sequence-button" type="button" class="primary" hidden>Передать боту</button>
+      </section>
+
+      <section id="error" class="error" hidden></section>
+    </main>
+
+    <script src="app-logic.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

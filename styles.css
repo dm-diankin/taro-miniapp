@@ -1,0 +1,333 @@
+:root {
+  color-scheme: dark;
+  --bg: var(--tg-theme-bg-color, #17140f);
+  --text: var(--tg-theme-text-color, #f3eadc);
+  --muted: var(--tg-theme-hint-color, #b8aa95);
+  --button: var(--tg-theme-button-color, #c9a45d);
+  --button-text: var(--tg-theme-button-text-color, #18130d);
+  --card-w: clamp(44px, 12.4vw, 72px);
+  --card-h: calc(var(--card-w) * 1.62);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(201, 164, 93, 0.08), transparent 35%),
+    linear-gradient(180deg, #201a13, var(--bg));
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0;
+  overflow-x: hidden;
+}
+
+button {
+  font: inherit;
+}
+
+.surface {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(190px, 1fr) auto auto auto auto auto;
+  gap: 12px;
+  padding: max(14px, env(safe-area-inset-top)) 12px max(18px, env(safe-area-inset-bottom));
+  overflow-x: hidden;
+}
+
+.topbar {
+  display: grid;
+  gap: 6px;
+  min-height: 54px;
+  justify-items: center;
+  text-align: center;
+}
+
+#status {
+  font-size: 16px;
+  font-weight: 650;
+}
+
+#hint {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+#hint.debug {
+  padding: 10px;
+  overflow-wrap: anywhere;
+  border: 1px solid rgba(243, 234, 220, 0.18);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.debug-position {
+  justify-self: center;
+  min-height: 20px;
+  padding: 3px 7px;
+  border-radius: 5px;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(243, 234, 220, 0.14);
+  font-size: 12px;
+}
+
+.table {
+  display: grid;
+  place-items: center;
+  min-height: calc(var(--card-h) + 148px);
+  overflow: hidden;
+  perspective: 880px;
+  perspective-origin: 50% 18%;
+  padding-bottom: 22px;
+}
+
+.fan {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, 560px);
+  height: calc(var(--card-h) + 138px);
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  cursor: pointer;
+  transform: rotateX(10deg);
+  transform-origin: center 82%;
+  transform-style: preserve-3d;
+}
+
+.fan.disabled {
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.card-back {
+  position: absolute;
+  left: 50%;
+  bottom: 56px;
+  width: var(--card-w);
+  height: var(--card-h);
+  border: 1px solid rgba(255, 246, 226, 0.42);
+  border-radius: 7px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.18), transparent 28%),
+    repeating-linear-gradient(45deg, #43301d 0 8px, #2d2117 8px 16px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.42);
+  z-index: var(--z);
+  transform-origin: center 92%;
+  transform:
+    translateX(calc(-50% + var(--offset) * min(88vw, 500px)))
+    translateY(var(--fan-y))
+    scale(var(--fan-scale))
+    rotateX(4deg)
+    rotate(var(--angle));
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  touch-action: none;
+}
+
+.card-back.near-focused {
+  filter: brightness(1.05);
+}
+
+.card-back.focused {
+  transform:
+    translateX(calc(-50% + var(--offset) * min(88vw, 500px)))
+    translateY(var(--focus-y))
+    scale(var(--focus-scale))
+    rotateX(2deg)
+    rotate(var(--focus-angle));
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.55);
+  outline: 2px solid rgba(201, 164, 93, 0.72);
+  outline-offset: 3px;
+  z-index: var(--focus-z);
+}
+
+.fan.just-shuffled .card-back {
+  animation: settle 180ms ease-out;
+}
+
+.controls {
+  display: grid;
+  justify-items: center;
+  min-height: 44px;
+}
+
+.selected {
+  min-height: 28px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.selected span {
+  width: 20px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: #3a2a1b;
+  color: var(--muted);
+  font-size: 11px;
+  border: 1px solid rgba(243, 234, 220, 0.2);
+}
+
+.panel,
+.reveal,
+.sequence-panel {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.primary {
+  min-width: 148px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 7px;
+  padding: 10px 16px;
+  background: var(--button);
+  color: var(--button-text);
+  font-weight: 700;
+}
+
+.primary.secondary {
+  background: #e6ded0;
+}
+
+.reveal-card {
+  perspective: 900px;
+  overflow: visible;
+}
+
+.revealed-inner {
+  width: min(62vw, 220px);
+  aspect-ratio: 0.62;
+  border-radius: 8px;
+  position: relative;
+  overflow: visible;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 340ms ease;
+  background: #241b13;
+  box-shadow: 0 20px 46px rgba(0, 0, 0, 0.5);
+}
+
+.reveal.is-open .revealed-inner {
+  transform: rotateY(180deg);
+}
+
+.reveal-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.reveal-back {
+  border: 1px solid rgba(255, 246, 226, 0.42);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.18), transparent 28%),
+    repeating-linear-gradient(45deg, #43301d 0 8px, #2d2117 8px 16px);
+}
+
+.reveal-front {
+  object-fit: contain;
+  background: #211911;
+  transform: rotateY(180deg);
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+img.reversed {
+  transform: rotate(180deg);
+}
+
+.reveal-front.reversed {
+  transform: rotateY(180deg) rotate(180deg);
+}
+
+.card-name {
+  min-height: 24px;
+  text-align: center;
+  font-weight: 650;
+}
+
+.sequence {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 10px;
+}
+
+.sequence-card {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+.sequence-card img {
+  aspect-ratio: 0.62;
+  border-radius: 5px;
+}
+
+.error {
+  color: #ffd4c7;
+  background: rgba(100, 28, 18, 0.35);
+  border: 1px solid rgba(255, 212, 199, 0.28);
+  border-radius: 7px;
+  padding: 10px;
+}
+
+@media (min-width: 700px) {
+  :root {
+    --card-w: 68px;
+  }
+
+  .surface {
+    max-width: 920px;
+    margin: 0 auto;
+  }
+}
+
+@keyframes settle {
+  from {
+    transform:
+      translateX(calc(-50% + var(--offset) * min(82vw, 460px)))
+      translateY(var(--fan-y))
+      scale(var(--fan-scale))
+      rotateX(3deg)
+      rotate(var(--angle));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
