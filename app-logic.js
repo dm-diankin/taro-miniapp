@@ -104,6 +104,39 @@
       ],
       reversals: { enabled: true, probability: 0.5 }
     },
+    single_card: {
+      recipe_id: "single_card",
+      role: "generic_draw",
+      spread_type: "single_card",
+      layout: "single",
+      positions: ["single"],
+      deck: { source: "rws78" },
+      steps: [
+        { action: "shuffle" },
+        { action: "user_select", count: 1, face: "down", ui: "fan" },
+        { action: "reveal" }
+      ],
+      reversals: { enabled: true, probability: 0.5 }
+    },
+    situation_action_direction: {
+      recipe_id: "situation_action_direction",
+      role: "generic_draw",
+      spread_type: "situation_action_direction",
+      layout: "row_3",
+      positions: ["situation", "action", "direction"],
+      position_labels_ru: {
+        situation: "Ситуация",
+        action: "Действие",
+        direction: "Направление"
+      },
+      deck: { source: "rws78" },
+      steps: [
+        { action: "shuffle" },
+        { action: "user_select", count: 3, face: "down", ui: "fan" },
+        { action: "reveal" }
+      ],
+      reversals: { enabled: true, probability: 0.5 }
+    },
     banzhaf_fools_game: {
       recipe_id: "banzhaf_fools_game",
       role: "morning_card",
@@ -218,6 +251,7 @@
     var rng = randomInt || cryptoRandomInt;
     var deck = assignOrientations(buildDeck(recipe.deck.source, cards), recipe.reversals, rng);
     var selected = [];
+    var candidate = null;
     var pendingAdd = null;
     var direction = null;
 
@@ -235,10 +269,11 @@
       }
     });
 
-    return {
+    var session = {
       recipe: recipe,
       deck: deck,
       selected: selected,
+      candidate: candidate,
       pendingAdd: pendingAdd,
       direction: direction,
       selectCard: function (index) {
@@ -250,6 +285,27 @@
         selected.push(card);
         return card;
       },
+      setCandidate: function (index) {
+        if (index < 0 || index >= deck.length || this.isSelectionComplete()) return null;
+        candidate = deck[index];
+        this.candidate = candidate;
+        return candidate;
+      },
+      clearCandidate: function () {
+        candidate = null;
+        this.candidate = null;
+      },
+      commitCandidate: function () {
+        if (!candidate) return null;
+        var index = deck.indexOf(candidate);
+        if (index < 0) {
+          this.clearCandidate();
+          return null;
+        }
+        var card = this.selectCard(index);
+        this.clearCandidate();
+        return card;
+      },
       canManualShuffle: function () {
         return selected.length === 0;
       },
@@ -257,6 +313,7 @@
         if (!this.canManualShuffle()) return false;
         deck = fisherYates(assignOrientations(deck, recipe.reversals, rng), rng);
         this.deck = deck;
+        this.clearCandidate();
         return true;
       },
       isSelectionComplete: function () {
@@ -281,6 +338,7 @@
         return buildResult(recipe, selected, direction);
       }
     };
+    return session;
   }
 
   function currentSelectStep(recipe) {
@@ -380,8 +438,9 @@
         };
       });
     } else {
-      cards = cards.map(function (card) {
+      cards = cards.map(function (card, index) {
         return {
+          position: (recipe.positions || [])[index],
           card_id: card.card_id,
           orientation: card.orientation
         };
@@ -393,6 +452,8 @@
       role: recipe.role,
       cards: cards
     };
+    if (recipe.spread_type) result.spread_type = recipe.spread_type;
+    if (recipe.question) result.question = recipe.question;
     if (direction) result.direction = direction;
     return result;
   }

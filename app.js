@@ -8,9 +8,12 @@
     session: null,
     focusIndex: 0,
     dragStart: null,
-    selectedForReveal: null,
-    suppressClick: false,
-    devMode: false
+    devMode: false,
+    question: "",
+    focusText: "",
+    headerText: "",
+    hintText: "",
+    focusLabel: ""
   };
 
   var fan = document.getElementById("fan");
@@ -22,9 +25,16 @@
   var revealName = document.getElementById("reveal-name");
   var revealButton = document.getElementById("reveal-button");
   var sendButton = document.getElementById("send-button");
+  var questionPanel = document.getElementById("question-panel");
+  var questionLabel = document.getElementById("question-label");
+  var questionText = document.getElementById("question-text");
   var directionPanel = document.getElementById("direction-panel");
   var sequencePanel = document.getElementById("sequence-panel");
   var sequence = document.getElementById("sequence");
+  var spreadPanel = document.getElementById("spread-panel");
+  var spread = document.getElementById("spread");
+  var revealSpreadButton = document.getElementById("reveal-spread-button");
+  var sendSpreadButton = document.getElementById("send-spread-button");
   var errorBox = document.getElementById("error");
   var shuffleButton = document.getElementById("shuffle-button");
   var debugPosition = document.getElementById("debug-position");
@@ -39,13 +49,20 @@
         document.body.classList.add("telegram");
       }
       var params = new URLSearchParams(window.location.search);
-      var recipeId = params.get("recipe_id") || "card_of_the_day";
+      var recipeId = params.get("recipe_id") || params.get("spread_type") || "card_of_the_day";
       var role = params.get("role");
+      state.question = (params.get("question") || "").trim();
+      state.focusText = (params.get("focus_text") || "").trim();
+      state.headerText = (params.get("header_text") || "").trim();
+      state.hintText = (params.get("hint_text") || "").trim();
+      state.focusLabel = (params.get("focus_label") || "").trim();
       state.devMode = params.get("dev") === "1" || params.get("debug") === "1";
       debugPosition.hidden = !state.devMode;
       var recipe = Object.assign({}, logic.RECIPES[recipeId]);
       if (!recipe.recipe_id) throw new Error("Неизвестный рецепт.");
       if (role) recipe.role = role;
+      if (state.question) recipe.question = state.question;
+      renderQuestion();
       state.cards = await loadCards();
       state.session = logic.createSession(recipe, state.cards);
       attachFanEvents();
@@ -70,6 +87,9 @@
     fan.innerHTML = "";
     var slots = logic.visualFanSlots(state.session.deck.length, 29);
     var activeSlot = nearestVisualSlot(slots, state.focusIndex);
+    var candidateSlot = state.session.candidate
+      ? nearestVisualSlot(slots, state.session.deck.indexOf(state.session.candidate))
+      : -1;
     slots.forEach(function (slot) {
       var item = document.createElement("button");
       item.type = "button";
@@ -89,6 +109,7 @@
       item.style.setProperty("--z", slot.zIndex);
       item.style.setProperty("--focus-z", slot.zIndex + 80);
       if (slot.slot === activeSlot) item.classList.add("focused");
+      if (slot.slot === candidateSlot) item.classList.add("candidate");
       if (Math.abs(slot.slot - activeSlot) === 1) item.classList.add("near-focused");
       fan.appendChild(item);
     });
@@ -99,15 +120,8 @@
     fan.addEventListener("pointerdown", onPointerDown);
     fan.addEventListener("pointermove", onPointerMove);
     fan.addEventListener("pointerup", onPointerUp);
-    fan.addEventListener("pointerleave", onPointerMove);
-    fan.addEventListener("click", function (event) {
-      if (state.suppressClick) {
-        state.suppressClick = false;
-        return;
-      }
-      focusFromPointer(event.clientX);
-      selectFocused(state.focusIndex);
-    });
+    fan.addEventListener("pointercancel", onPointerCancel);
+    fan.addEventListener("click", function (event) { event.preventDefault(); });
   }
 
   function onPointerDown(event) {
@@ -117,19 +131,26 @@
   }
 
   function onPointerMove(event) {
+    if (!state.dragStart) return;
     focusFromPointer(event.clientX);
   }
 
   function onPointerUp(event) {
     if (!state.dragStart) return;
-    var dy = event.clientY - state.dragStart.y;
-    var dx = Math.abs(event.clientX - state.dragStart.x);
-    var index = state.focusIndex;
+    focusFromPointer(event.clientX);
     state.dragStart = null;
-    if (dy > 34 && dy > dx * 0.75) {
-      state.suppressClick = true;
-      selectFocused(index);
-    }
+    state.session.setCandidate(state.focusIndex);
+    hapticImpact();
+    updateFanFocus();
+    updateStatus();
+    updateShuffle();
+  }
+
+  function onPointerCancel() {
+    state.dragStart = null;
+    if (!state.session.candidate) return;
+    state.focusIndex = state.session.deck.indexOf(state.session.candidate);
+    updateFanFocus();
   }
 
   function focusFromPointer(clientX) {
@@ -147,11 +168,11 @@
     updateDebugPosition();
   }
 
-  function selectFocused(index) {
-    var card = state.session.selectCard(index);
+  function openCandidate() {
+    var card = state.session.commitCandidate();
     if (!card) return;
     hapticImpact();
-    state.focusIndex = Math.max(0, index - 1);
+    state.focusIndex = Math.min(state.focusIndex, Math.max(0, state.session.deck.length - 1));
     renderSelected();
     updateShuffle();
     if (state.session.isSelectionComplete()) {
@@ -161,8 +182,11 @@
         directionPanel.hidden = false;
         status.textContent = "Выберите направление чтения";
       } else {
-        state.selectedForReveal = card;
-        showReveal(card);
+        if (state.session.recipe.layout === "row_3") {
+          showSpread(false);
+        } else {
+          showReveal(card, true);
+        }
       }
       return;
     }
@@ -173,10 +197,14 @@
   function updateFanFocus() {
     var slots = logic.visualFanSlots(state.session.deck.length, 29);
     var activeSlot = nearestVisualSlot(slots, state.focusIndex);
+    var candidateSlot = state.session.candidate
+      ? nearestVisualSlot(slots, state.session.deck.indexOf(state.session.candidate))
+      : -1;
     Array.prototype.forEach.call(fan.children, function (item, index) {
       item.classList.toggle("focused", index === activeSlot);
       item.classList.toggle("near-focused", Math.abs(index - activeSlot) === 1);
       if (slots[index]) item.dataset.index = String(slots[index].logicalIndex);
+      item.classList.toggle("candidate", index === candidateSlot);
     });
     updateDebugPosition();
   }
@@ -205,9 +233,9 @@
     status.textContent = "Выбрано " + state.session.selected.length + " из " + total;
   }
 
-  function showReveal(card) {
+  function showReveal(card, open) {
     revealPanel.hidden = false;
-    revealPanel.classList.remove("is-open");
+    revealPanel.classList.toggle("is-open", !!open);
     revealCard.innerHTML = "";
     var inner = document.createElement("div");
     inner.className = "revealed-inner";
@@ -222,9 +250,23 @@
     inner.appendChild(img);
     revealCard.appendChild(inner);
     revealName.textContent = card.name_ru + (card.orientation === "reversed" ? " · перевернутая" : "");
-    revealName.hidden = true;
-    revealButton.hidden = false;
-    sendButton.hidden = true;
+    revealName.hidden = !open;
+    revealButton.hidden = !!open;
+    sendButton.hidden = !open;
+  }
+
+  function renderQuestion() {
+    var text = state.question || state.focusText;
+    if (!text) {
+      questionPanel.hidden = true;
+      return;
+    }
+    hint.textContent = state.question
+      ? (state.hintText || "Проведите пальцем по колоде и выберите карту.")
+      : (state.hintText || "Проведите пальцем по колоде и выберите карту.");
+    questionLabel.textContent = state.focusLabel || (state.question ? "Вопрос" : "Фокус");
+    questionText.textContent = text;
+    questionPanel.hidden = false;
   }
 
   revealButton.addEventListener("click", function () {
@@ -235,6 +277,14 @@
   });
 
   sendButton.addEventListener("click", function () {
+    sendResult(state.session.result());
+  });
+
+  revealSpreadButton.addEventListener("click", function () {
+    showSpread(true);
+  });
+
+  sendSpreadButton.addEventListener("click", function () {
     sendResult(state.session.result());
   });
 
@@ -269,11 +319,51 @@
     document.getElementById("send-sequence-button").hidden = false;
   }
 
+  function showSpread(open) {
+    spreadPanel.hidden = false;
+    spreadPanel.classList.toggle("is-open", !!open);
+    spread.innerHTML = "";
+    var result = state.session.result();
+    result.cards.forEach(function (card, index) {
+      var full = findCard(card.card_id);
+      var item = document.createElement("div");
+      item.className = "spread-card";
+      var label = document.createElement("div");
+      label.className = "spread-label";
+      label.textContent = spreadPositionLabel(card.position, index);
+      var cardBox = document.createElement("div");
+      cardBox.className = "spread-card-box";
+      var back = document.createElement("div");
+      back.className = "spread-face spread-back";
+      var img = document.createElement("img");
+      img.className = "spread-face spread-front";
+      img.src = full.image;
+      img.alt = full.name_ru;
+      if (card.orientation === "reversed") img.classList.add("reversed");
+      var name = document.createElement("div");
+      name.className = "spread-name";
+      name.textContent = full.name_ru + (card.orientation === "reversed" ? " · перевернутая" : "");
+      cardBox.appendChild(back);
+      cardBox.appendChild(img);
+      item.appendChild(label);
+      item.appendChild(cardBox);
+      item.appendChild(name);
+      spread.appendChild(item);
+    });
+    revealSpreadButton.hidden = !!open;
+    sendSpreadButton.hidden = !open;
+    status.textContent = open ? "Расклад готов" : "Три карты выбраны";
+  }
+
   document.getElementById("send-sequence-button").addEventListener("click", function () {
     sendResult(state.session.result());
   });
 
   shuffleButton.addEventListener("click", function () {
+    if (state.session.candidate) {
+      openCandidate();
+      return;
+    }
     if (!state.session.manualShuffle()) {
       status.textContent = "Карты уже выбираются.";
       updateShuffle();
@@ -307,18 +397,31 @@
   }
 
   function updateStatus() {
+    if (state.session.candidate) {
+      status.textContent = "Карта выбрана. Можно открыть или выбрать другую.";
+      updateDebugPosition();
+      return;
+    }
     if (state.session.selected.length) {
       status.textContent = "Выбрано " + state.session.selected.length + " из " + selectionTarget();
       return;
     }
-    status.textContent = "Проведите пальцем по вееру. Потяните выбранную вниз.";
+    status.textContent = state.headerText || "Выберите карту";
+    if (state.hintText && questionPanel.hidden) hint.textContent = state.hintText;
     updateDebugPosition();
   }
 
   function updateShuffle() {
+    if (state.session && state.session.candidate) {
+      shuffleButton.hidden = false;
+      shuffleButton.disabled = false;
+      shuffleButton.textContent = "Открыть";
+      return;
+    }
     var canShuffle = state.session && state.session.canManualShuffle && state.session.canManualShuffle();
+    shuffleButton.hidden = false;
     shuffleButton.disabled = !canShuffle;
-    shuffleButton.textContent = canShuffle ? "Перемешать" : "Карты уже выбираются";
+    shuffleButton.textContent = canShuffle ? "Перемешать" : "Выберите карту";
   }
 
   function updateDebugPosition() {
@@ -337,6 +440,11 @@
       return item.action === "user_select";
     })[0];
     return step ? step.count : 1;
+  }
+
+  function spreadPositionLabel(position, index) {
+    var labels = state.session.recipe.position_labels_ru || {};
+    return labels[position] || position || String(index + 1);
   }
 
   function hapticSelection() {
