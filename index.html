@@ -4,27 +4,37 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>TARO Card Picker</title>
-    <link rel="stylesheet" href="styles.css?v=20261013-picker">
+    <link rel="stylesheet" href="styles.css?v=20261115-repeat-controls-hotfix">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
   </head>
   <body>
     <main class="surface">
       <section class="topbar" aria-live="polite">
         <div id="status">Загрузка колоды...</div>
+        <div id="deck-state" class="deck-state">Это ваша колода. Она в том порядке, в котором вы оставили её в прошлый раз.</div>
         <div id="hint">Проведите пальцем по картам и отпустите на выбранной.</div>
         <div id="question-panel" class="question-panel" hidden>
           <div id="question-label" class="question-label">Вопрос</div>
           <div id="question-text" class="question-text"></div>
         </div>
+        <div id="deck-count" class="deck-count">78 карт</div>
         <div id="debug-position" class="debug-position" hidden></div>
       </section>
 
       <section class="table">
         <div id="fan" class="fan" aria-label="Веер карт"></div>
+        <div id="mechanic-stage" class="mechanic-stage" hidden>
+          <div id="mechanic-title" class="mechanic-title"></div>
+          <div id="mechanic-piles" class="mechanic-piles"></div>
+          <div id="mechanic-progress" class="mechanic-progress"></div>
+          <button id="mechanic-cancel" type="button" class="quiet-button">Вернуться к колоде</button>
+        </div>
       </section>
 
-      <section class="controls">
+      <section id="deck-controls" class="controls">
         <button id="shuffle-button" type="button" class="primary">Перемешать</button>
+        <button id="cut-button" type="button" class="primary secondary">Снять</button>
+        <button id="reset-button" type="button" class="primary secondary">Собрать заново</button>
       </section>
 
       <section id="selected" class="selected" aria-label="Выбранные карты"></section>
@@ -55,7 +65,7 @@
       <section id="error" class="error" hidden></section>
     </main>
 
-    <script src="app-logic.js?v=20261013-picker"></script>
-    <script src="app.js?v=20261013-picker"></script>
+    <script src="app-logic.js?v=20261115-repeat-controls-hotfix"></script>
+    <script src="app.js?v=20261115-repeat-controls-hotfix"></script>
   </body>
 </html>

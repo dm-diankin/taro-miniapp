@@ -14,10 +14,13 @@
     headerText: "",
     hintText: "",
     focusLabel: ""
+    ,busy: false
+    ,cutOrder: []
   };
 
   var fan = document.getElementById("fan");
   var status = document.getElementById("status");
+  var deckStateLine = document.getElementById("deck-state");
   var hint = document.getElementById("hint");
   var selected = document.getElementById("selected");
   var revealPanel = document.getElementById("reveal-panel");
@@ -37,7 +40,16 @@
   var sendSpreadButton = document.getElementById("send-spread-button");
   var errorBox = document.getElementById("error");
   var shuffleButton = document.getElementById("shuffle-button");
+  var cutButton = document.getElementById("cut-button");
+  var resetButton = document.getElementById("reset-button");
+  var deckCount = document.getElementById("deck-count");
   var debugPosition = document.getElementById("debug-position");
+  var mechanicStage = document.getElementById("mechanic-stage");
+  var mechanicTitle = document.getElementById("mechanic-title");
+  var mechanicPiles = document.getElementById("mechanic-piles");
+  var mechanicProgress = document.getElementById("mechanic-progress");
+  var mechanicCancel = document.getElementById("mechanic-cancel");
+  var deckControls = document.getElementById("deck-controls");
 
   init();
 
@@ -64,14 +76,31 @@
       if (state.question) recipe.question = state.question;
       renderQuestion();
       state.cards = await loadCards();
-      state.session = logic.createSession(recipe, state.cards);
+      var deckState = parseDeckState(params.get("deck_state"));
+      state.session = logic.createSession(recipe, state.cards, null, deckState);
       attachFanEvents();
       renderFan();
       updateStatus();
       updateShuffle();
+      if (state.devMode && params.get("demo") === "shuffle") {
+        showMechanic("Части вплетаются небольшими группами", false);
+        renderShuffleHalves();
+        renderShufflePackets();
+      } else if (state.devMode && params.get("demo") === "cut") {
+        state.busy = true;
+        state.cutOrder = [];
+        showMechanic("Колода снята на пять стопок", true);
+        mechanicProgress.textContent = "Нажимайте стопки в порядке, в котором хотите собрать колоду";
+        renderCutPiles();
+      }
     } catch (error) {
       showError(error.message || String(error));
     }
+  }
+
+  function parseDeckState(raw) {
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch (_) { throw new Error("Не удалось открыть личную колоду."); }
   }
 
   async function loadCards() {
@@ -114,6 +143,7 @@
       fan.appendChild(item);
     });
     focusCard(Math.min(state.focusIndex, state.session.deck.length - 1), { render: false });
+    deckCount.textContent = state.session.deck.length + " карт";
   }
 
   function attachFanEvents() {
@@ -359,25 +389,191 @@
     sendResult(state.session.result());
   });
 
-  shuffleButton.addEventListener("click", function () {
+  shuffleButton.addEventListener("click", async function () {
     if (state.session.candidate) {
       openCandidate();
       return;
     }
-    if (!state.session.manualShuffle()) {
+    if (!state.session.canManualShuffle() || state.busy) {
       status.textContent = "Карты уже выбираются.";
       updateShuffle();
       return;
     }
+    state.busy = true;
+    showMechanic("Колода разделяется на две части", false);
+    renderShuffleHalves();
+    state.session.manualShuffle();
+    await wait(650);
+    mechanicTitle.textContent = "Части вплетаются небольшими группами";
+    renderShufflePackets();
+    await wait(1180);
+    mechanicPiles.classList.add("consume-left");
+    await wait(280);
+    mechanicPiles.classList.add("consume-right");
+    await wait(520);
+    mechanicTitle.textContent = "Колода снова собрана";
+    mechanicProgress.textContent = "Порядок карт изменён и будет сохранён";
+    await wait(520);
     state.focusIndex = 0;
-    fan.classList.remove("just-shuffled");
+    fan.classList.remove("just-shuffled", "from-shuffle");
+    fan.classList.add("from-shuffle");
     renderFan();
+    state.busy = false;
+    hideMechanic();
+    deckStateLine.textContent = "Колода перемешана.";
     updateStatus();
     updateShuffle();
-    window.requestAnimationFrame(function () {
-      fan.classList.add("just-shuffled");
-    });
+    window.setTimeout(function () { fan.classList.remove("from-shuffle"); }, 1150);
   });
+
+  cutButton.addEventListener("click", function () {
+    if (!state.session.canManualShuffle() || state.busy) return;
+    state.busy = true;
+    state.cutOrder = [];
+    showMechanic("Колода снята на пять стопок", true);
+    mechanicProgress.textContent = "Нажимайте стопки в порядке, в котором хотите собрать колоду";
+    renderCutPiles();
+  });
+
+  mechanicCancel.addEventListener("click", function () {
+    if (!state.busy || !state.cutOrder) return;
+    state.busy = false;
+    state.cutOrder = [];
+    hideMechanic();
+    updateStatus();
+    updateShuffle();
+  });
+
+  resetButton.addEventListener("click", async function () {
+    if (!state.session.canManualShuffle() || state.busy) return;
+    state.busy = true;
+    showMechanic("Пять канонических стопок", false);
+    renderCanonicalPiles();
+    state.session.canonicalReset();
+    await wait(560);
+    mechanicPiles.classList.add("assemble-canonical");
+    mechanicTitle.textContent = "Стопки собираются в каноническом порядке";
+    await wait(900);
+    state.focusIndex = 0;
+    renderFan();
+    hideMechanic();
+    deckStateLine.textContent = "Пять канонических стопок собраны заново.";
+    state.busy = false;
+    updateStatus();
+    updateShuffle();
+    hapticImpact();
+  });
+
+  function showMechanic(title, cancellable) {
+    fan.hidden = true;
+    mechanicStage.hidden = false;
+    mechanicTitle.textContent = title;
+    mechanicPiles.innerHTML = "";
+    mechanicPiles.className = "mechanic-piles";
+    mechanicProgress.textContent = "";
+    mechanicCancel.hidden = !cancellable;
+    deckControls.hidden = true;
+    shuffleButton.disabled = true;
+    cutButton.disabled = true;
+    resetButton.disabled = true;
+    deckCount.textContent = state.cards.length + " карт";
+  }
+
+  function hideMechanic() {
+    mechanicStage.hidden = true;
+    fan.hidden = false;
+    deckControls.hidden = false;
+    mechanicPiles.innerHTML = "";
+    shuffleButton.disabled = false;
+    cutButton.disabled = false;
+    resetButton.disabled = false;
+  }
+
+  function renderShuffleHalves() {
+    ["left", "right"].forEach(function (side) {
+      var pile = document.createElement("div");
+      pile.className = "deck-pile shuffle-half " + side;
+      mechanicPiles.appendChild(pile);
+    });
+    mechanicProgress.textContent = "Две части сохраняют внутренний порядок карт";
+  }
+
+  function renderShufflePackets() {
+    for (var i = 0; i < 14; i += 1) {
+      var packet = document.createElement("div");
+      packet.className = "shuffle-packet";
+      packet.style.setProperty("--packet-index", String(10 + i));
+      packet.style.setProperty("--packet-from", (i % 2 ? "42px" : "calc(-100% - 42px)"));
+      packet.style.setProperty("--packet-delay", (i * 105) + "ms");
+      packet.style.setProperty("--packet-lift", (i * 1.7) + "px");
+      mechanicPiles.appendChild(packet);
+    }
+    mechanicProgress.textContent = "Группы по несколько карт приходят то слева, то справа";
+  }
+
+  function renderCutPiles() {
+    var size = state.session.deck.length;
+    for (var i = 0; i < 5; i += 1) {
+      var start = Math.floor(size * i / 5);
+      var end = Math.floor(size * (i + 1) / 5);
+      var pile = document.createElement("button");
+      pile.type = "button";
+      pile.className = "deck-pile cut-pile";
+      pile.textContent = String(i + 1);
+      pile.dataset.pileIndex = String(i);
+      pile.dataset.count = String(end - start);
+      pile.style.setProperty("--pile-left", (10 + i * 20) + "%");
+      pile.style.setProperty("--pile-angle", ((i - 2) * 2.2) + "deg");
+      pile.addEventListener("click", chooseCutPile);
+      mechanicPiles.appendChild(pile);
+    }
+  }
+
+  function renderCanonicalPiles() {
+    var labels = ["Старшие", "Жезлы", "Кубки", "Мечи", "Пентакли"];
+    var counts = [22, 14, 14, 14, 14];
+    labels.forEach(function (label, index) {
+      var pile = document.createElement("div");
+      pile.className = "deck-pile canonical-pile";
+      pile.dataset.label = label;
+      pile.dataset.count = String(counts[index]);
+      pile.style.setProperty("--pile-left", (10 + index * 20) + "%");
+      pile.style.setProperty("--pile-angle", ((index - 2) * 2.2) + "deg");
+      pile.style.setProperty("--canonical-index", String(index));
+      mechanicPiles.appendChild(pile);
+    });
+    mechanicProgress.textContent = "Старшие арканы и четыре масти лежат отдельно";
+  }
+
+  async function chooseCutPile(event) {
+    var pile = event.currentTarget;
+    var index = parseInt(pile.dataset.pileIndex, 10);
+    if (state.cutOrder.indexOf(index) !== -1) return;
+    state.cutOrder.push(index);
+    pile.classList.add("selected");
+    pile.style.setProperty("--selection-index", String(state.cutOrder.length));
+    pile.textContent = String(state.cutOrder.length);
+    hapticSelection();
+    mechanicProgress.textContent = "Порядок сборки: " + state.cutOrder.map(function (value) { return value + 1; }).join(" → ");
+    if (state.cutOrder.length < 5) return;
+    mechanicTitle.textContent = "Пять стопок собраны в выбранном порядке";
+    var size = state.session.deck.length;
+    var boundaries = [];
+    for (var boundary = 1; boundary < 5; boundary += 1) boundaries.push(Math.floor(size * boundary / 5));
+    state.session.pileCut(boundaries, state.cutOrder);
+    await wait(650);
+    state.focusIndex = 0;
+    renderFan();
+    hideMechanic();
+    deckStateLine.textContent = "Пять стопок собраны в выбранном порядке.";
+    state.busy = false;
+    updateStatus();
+    updateShuffle();
+  }
+
+  function wait(milliseconds) {
+    return new Promise(function (resolve) { window.setTimeout(resolve, milliseconds); });
+  }
 
   function sendResult(result) {
     var data = JSON.stringify(result);
@@ -418,10 +614,12 @@
       shuffleButton.textContent = "Открыть";
       return;
     }
-    var canShuffle = state.session && state.session.canManualShuffle && state.session.canManualShuffle();
+    var canShuffle = !state.busy && state.session && state.session.canManualShuffle && state.session.canManualShuffle();
     shuffleButton.hidden = false;
     shuffleButton.disabled = !canShuffle;
     shuffleButton.textContent = canShuffle ? "Перемешать" : "Выберите карту";
+    cutButton.hidden = !canShuffle;
+    resetButton.hidden = !canShuffle;
   }
 
   function updateDebugPosition() {

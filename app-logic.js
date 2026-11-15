@@ -246,21 +246,23 @@
     return Math.floor(Math.random() * max);
   }
 
-  function createSession(recipe, cards, randomInt) {
+  function createSession(recipe, cards, randomInt, deckState) {
     validateRecipe(recipe);
     var rng = randomInt || cryptoRandomInt;
-    var deck = assignOrientations(buildDeck(recipe.deck.source, cards), recipe.reversals, rng);
+    var orderedCards = orderCards(cards, deckState && deckState.card_order);
+    var deck = assignOrientations(buildDeck(recipe.deck.source, orderedCards), recipe.reversals, rng);
     var selected = [];
     var candidate = null;
     var pendingAdd = null;
     var direction = null;
+    var managementActions = [];
 
     recipe.steps.forEach(function (step) {
       if (step.action === "remove") {
         deck = deck.filter(function (card) {
           return card.card_id !== step.card_id;
         });
-      } else if (step.action === "shuffle") {
+      } else if (step.action === "shuffle" && !(deckState && deckState.card_order)) {
         deck = fisherYates(deck, rng);
       } else if (step.action === "add") {
         pendingAdd = step.card_id;
@@ -311,8 +313,25 @@
       },
       manualShuffle: function () {
         if (!this.canManualShuffle()) return false;
-        deck = fisherYates(assignOrientations(deck, recipe.reversals, rng), rng);
+        deck = humanInterleave(assignOrientations(deck, recipe.reversals, rng), rng);
         this.deck = deck;
+        managementActions.push("human_shuffle");
+        this.clearCandidate();
+        return true;
+      },
+      pileCut: function (boundaries, pileOrder) {
+        if (!this.canManualShuffle()) return false;
+        deck = cutIntoPiles(deck, boundaries, pileOrder);
+        this.deck = deck;
+        managementActions.push("pile_cut");
+        this.clearCandidate();
+        return true;
+      },
+      canonicalReset: function () {
+        if (!this.canManualShuffle()) return false;
+        deck = assignOrientations(orderCards(cards), recipe.reversals, rng);
+        this.deck = deck;
+        managementActions.push("canonical_reset");
         this.clearCandidate();
         return true;
       },
@@ -335,10 +354,69 @@
         this.selected = selected;
       },
       result: function () {
-        return buildResult(recipe, selected, direction);
+        var result = buildResult(recipe, selected, direction);
+        if (deckState && deckState.version) {
+          result.personal_deck = {
+            base_version: deckState.version,
+            operation_order: deck.concat(selected).map(function (card) { return card.card_id; }),
+            actions: managementActions.slice()
+          };
+        }
+        return result;
+      },
+      deckState: function () {
+        return {
+          base_version: deckState && deckState.version,
+          card_order: deck.concat(selected).map(function (card) { return card.card_id; }),
+          actions: managementActions.slice()
+        };
       }
     };
     return session;
+  }
+
+  function orderCards(cards, cardOrder) {
+    var canonical = (cards || []).slice().sort(function (a, b) {
+      return canonicalIndex(a.card_id) - canonicalIndex(b.card_id);
+    });
+    if (!cardOrder || cardOrder.length !== canonical.length) return canonical;
+    var byId = {};
+    canonical.forEach(function (card) { byId[card.card_id] = card; });
+    var ordered = cardOrder.map(function (id) { return byId[id]; });
+    return ordered.every(Boolean) ? ordered : canonical;
+  }
+
+  function canonicalIndex(cardId) {
+    if (cardId.indexOf("major_") === 0) return parseInt(cardId.split("_")[1], 10);
+    var parts = cardId.split("_");
+    var suits = { wands: 0, cups: 1, swords: 2, pentacles: 3 };
+    return 22 + suits[parts[1]] * 14 + parseInt(parts[2], 10) - 1;
+  }
+
+  function humanInterleave(deck, randomInt) {
+    if (deck.length < 2) return deck.slice();
+    var split = Math.max(1, Math.min(deck.length - 1, Math.floor(deck.length / 2) + randomInt(13) - 6));
+    var left = deck.slice(0, split);
+    var right = deck.slice(split);
+    var result = [];
+    while (left.length || right.length) {
+      var source = left.length && (!right.length || randomInt(2) === 0) ? left : right;
+      result = result.concat(source.splice(0, Math.min(source.length, randomInt(4) + 1)));
+    }
+    if (result.every(function (card, index) { return card === deck[index]; })) {
+      result.push(result.shift());
+    }
+    return result;
+  }
+
+  function cutIntoPiles(deck, boundaries, pileOrder) {
+    var points = [0].concat(boundaries || [], [deck.length]);
+    var piles = [];
+    for (var i = 0; i < points.length - 1; i += 1) piles.push(deck.slice(points[i], points[i + 1]));
+    if (piles.length < 2 || piles.length > 5 || (pileOrder || []).slice().sort().join(",") !== piles.map(function (_, i) { return i; }).join(",")) {
+      throw new Error("Некорректный порядок стопок.");
+    }
+    return [].concat.apply([], pileOrder.map(function (index) { return piles[index]; }));
   }
 
   function currentSelectStep(recipe) {
@@ -484,6 +562,9 @@
     buildDeck: buildDeck,
     assignOrientations: assignOrientations,
     fisherYates: fisherYates,
+    humanInterleave: humanInterleave,
+    cutIntoPiles: cutIntoPiles,
+    orderCards: orderCards,
     createSession: createSession,
     normalizedFromPointer: normalizedFromPointer,
     indexFromNormalized: indexFromNormalized,
