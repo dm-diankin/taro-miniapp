@@ -262,8 +262,8 @@
         deck = deck.filter(function (card) {
           return card.card_id !== step.card_id;
         });
-      } else if (step.action === "shuffle" && !(deckState && deckState.card_order)) {
-        deck = fisherYates(deck, rng);
+      } else if (step.action === "shuffle") {
+        if (!(deckState && deckState.card_order)) deck = fisherYates(deck, rng);
       } else if (step.action === "add") {
         pendingAdd = step.card_id;
       } else if (["user_select", "choose_direction", "reveal", "reveal_sequence"].indexOf(step.action) === -1) {
