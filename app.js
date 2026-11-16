@@ -215,7 +215,7 @@
         if (state.session.recipe.layout === "row_3") {
           showSpread(false);
         } else {
-          showReveal(card, true);
+          showReveal(card, false);
         }
       }
       return;
@@ -594,7 +594,7 @@
 
   function updateStatus() {
     if (state.session.candidate) {
-      status.textContent = "Карта выбрана. Можно открыть или выбрать другую.";
+      status.textContent = "Карта отмечена. Нажмите «Выбрать» или остановитесь на другой.";
       updateDebugPosition();
       return;
     }
@@ -611,7 +611,9 @@
     if (state.session && state.session.candidate) {
       shuffleButton.hidden = false;
       shuffleButton.disabled = false;
-      shuffleButton.textContent = "Открыть";
+      shuffleButton.textContent = "Выбрать";
+      cutButton.hidden = true;
+      resetButton.hidden = true;
       return;
     }
     var canShuffle = !state.busy && state.session && state.session.canManualShuffle && state.session.canManualShuffle();
